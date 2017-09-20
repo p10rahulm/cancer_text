@@ -7,7 +7,7 @@ rm(list=ls())
 # -------------
 # readfiles
 # -------------
-load("cleaned/test_variants.bin")
+load("cleaned/testing_variants.bin")
 load("cleaned/training_variants.bin")
 
 # -------------
