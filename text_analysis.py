@@ -21,14 +21,14 @@ with open("rawdata/training_variants.csv", "r") as f:
 # Clean meta data
 # --------------
 
-training_data = training_data [1:]
+training_data = training_data[1:]
 training_data = [x.split(",") for x in training_data]
 
 gene = [x[1] for x in training_data]
 variation = [x[2] for x in training_data]
 category = [int(x[3][0]) for x in training_data]
 category = np.array(category)
-category_twops = 2**(category-1)
+category_twops = 2 ** (category - 1)
 
 # --------------
 # Clean Synopsis Data
@@ -39,44 +39,48 @@ full_dict = defaultdict(int)
 for synopses_line in synopses_text:
     words = synopses_line.split()
     for word in words:
-        full_dict[word]+=1
+        full_dict[word] += 1
 
-sorted_dictionary_tuplelist = sorted(full_dict.items(), key=operator.itemgetter(1),  reverse=True)
+sorted_dictionary_tuplelist = sorted(full_dict.items(), key=operator.itemgetter(1), reverse=True)
 
 sorted_dictionary_list = [itemtuple[0] for itemtuple in sorted_dictionary_tuplelist]
-sorted_dictionary_index = {sorted_dictionary_list[i]:i for i in range(0,len(sorted_dictionary_list))}
+sorted_dictionary_index = {sorted_dictionary_list[i]: i for i in range(0, len(sorted_dictionary_list))}
 
 # --------------
 # Wordcount Matrix
 # --------------
-wordcount_doc = np.zeros(shape=(len(synopses_text),len(sorted_dictionary_list)), dtype=np.int8)
+wordcount_doc = np.zeros(shape=(len(synopses_text), len(sorted_dictionary_list)), dtype=np.int8)
 
-for synopses_line_no in range(0,len(synopses_text)):
+for synopses_line_no in range(0, len(synopses_text)):
     words = synopses_text[synopses_line_no].split()
     for word in words:
-        wordcount_doc[synopses_line_no,(sorted_dictionary_index[word]-1)] += 1
+        wordcount_doc[synopses_line_no, (sorted_dictionary_index[word] - 1)] += 1
 # print("wordcount")
 # print(wordcount_doc[0:20, ])
 
 # --------------
 # Existence Matrix
 # --------------
-wordexists_doc  = wordcount_doc
-wordexists_doc[wordexists_doc !=0] = 1
-# print("wordexists")
-# print(wordexists_doc [0:20, ])
+wordexists_doc = wordcount_doc
+wordexists_doc[wordexists_doc != 0] = 1
+print("wordexists")
+print(wordexists_doc [0:20, ])
 
 # --------------
 # Category Matrix
 # --------------
 exist_cat_list = []
 count_cat_list = []
-for i in range(1,10):
-    exist_cat_list.append(wordexists_doc[np.where(category==i),])
-    count_cat_list.append(wordcount_doc[np.where(category==i),])
+for i in range(1, 10):
+    exist_cat_list.append(wordexists_doc[np.where(category == i)[0],:])
+    count_cat_list.append(wordcount_doc[np.where(category == i)[0],:])
 
-print("count cat list")
-print(count_cat_list[1])
+for i in range(0, 9):
+    numdocs_word[i] = np.sum(exist_cat_list[i],axis=0)
+    num_occurances_indoc_word[i] = np.sum(count_cat_list[i], axis=0)
+
+
+print("numdocs_word")
+print(numdocs_word)
 
 # np.save("cleaned/outputtrainmatrix", wordcount_doc )
-
