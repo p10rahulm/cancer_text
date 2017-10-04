@@ -1,19 +1,14 @@
 
-cleaning_cancer_text <- function(synopses){
-  # Norvig by frequency
-  word_freq <- read.table("rawdata/word_frequencies.txt")
-  word_freq <- word_freq[1:30000,1]
-  word_freq <- as.character(word_freq)
-  word_freq <-tolower(word_freq)
-  write(word_freq,file="rawdata/words_to_remove.csv")
-  
+cleaning_cancer_text <- function(synopses,frequent_words){
+  frequent_words <- as.character(frequent_words)
+  frequent_words <-tolower(frequent_words)
   # Convert to lower
   synopses <-tolower(synopses)
   
   # Loop with 14 gsubs as gsub doesn't accept 30k long sequence
   i=0
   for(i in 0:14){
-    a <- paste0("\\b(",paste(word_freq[(i*2000+1):(i*2000+2000)],collapse = "|"),")\\b")
+    a <- paste0("\\b(",paste(frequent_words[(i*2000+1):(i*2000+2000)],collapse = "|"),")\\b")
     synopses <- gsub(pattern = a,replacement = " ",x = synopses,perl = T)
     print(i)
   }
