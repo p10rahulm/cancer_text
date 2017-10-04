@@ -49,7 +49,7 @@ sorted_dictionary_index = {sorted_dictionary_list[i]: i for i in range(0, len(so
 # --------------
 # Wordcount Matrix
 # --------------
-wordcount_doc = np.zeros(shape=(len(synopses_text), len(sorted_dictionary_list)), dtype=np.int8)
+wordcount_doc = np.zeros(shape=(len(synopses_text), len(sorted_dictionary_list)), dtype=np.int16)
 
 for synopses_line_no in range(0, len(synopses_text)):
     words = synopses_text[synopses_line_no].split()
@@ -63,8 +63,8 @@ for synopses_line_no in range(0, len(synopses_text)):
 # --------------
 wordexists_doc = wordcount_doc
 wordexists_doc[wordexists_doc != 0] = 1
-# print("wordexists")
-# print(wordexists_doc [0:20, ])
+print("np.array_equal(wordcount_doc,wordexists_doc)")
+print(np.array_equal(wordcount_doc,wordexists_doc))
 
 # --------------
 # Category-wise split
@@ -86,6 +86,7 @@ for i in range(0, 9):
 
 
 print("numdocs_word")
-print(numdocs_word[4,])
-
+print(numdocs_word[:,1:15])
+print("num_occurances_indoc_word")
+print(num_occurances_indoc_word[:,1:15])
 # np.save("cleaned/outputtrainmatrix", wordcount_doc )
