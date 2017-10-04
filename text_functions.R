@@ -23,6 +23,7 @@ cleaning_cancer_text <- function(synopses,frequent_words){
   synopses <- gsub("\\([0-9]+\\, [0-9]+\\)"," ",synopses)
   synopses <- gsub("\\([0-9]+\\, [0-9]+\\, [0-9]+\\)"," ",synopses)
   synopses <- gsub("\\([0-9]+\\, [0-9]+\\, [0-9]+\\, [0-9]+\\)"," ",synopses)
+  synopses <- gsub("[1-2][0-9][0-9][0-9]"," ",synopses)
   synopses <- gsub("[[:punct:]]", "", synopses)
   synopses <- gsub(" [0-9] "," ",synopses)
   synopses <- gsub(" [0-9][0-9] "," ",synopses)
