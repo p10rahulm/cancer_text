@@ -14,12 +14,24 @@ with open("cleaned/training_synopses.txt", "r") as f:
     synopses_text = f.readlines()
 # you may also want to remove whitespace characters like `\n` at the end of each line
 
-with open("cleaned/training_synopses.txt", "r") as f:
-    synopses_text = f.readlines()
-# you may also want to remove whitespace characters like `\n` at the end of each line
+with open("rawdata/training_variants.csv", "r") as f:
+    training_data = f.readlines()
 
 # --------------
-# Clean Raw Data
+# Clean meta data
+# --------------
+
+training_data = training_data [1:]
+training_data = [x.split(",") for x in training_data]
+
+gene = [x[1] for x in training_data]
+variation = [x[2] for x in training_data]
+category = [int(x[3][0]) for x in training_data]
+category = np.array(category)
+# print(category)
+# print(len(category))
+# --------------
+# Clean Synopsis Data
 # --------------
 synopses_text = [x.strip() for x in synopses_text]
 

@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d586db88-a30c-4e00-9646-1053b01e0115" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/removewords_functionalized.R" afterPath="$PROJECT_DIR$/removewords_functionalized.R" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/text_analysis.py" afterPath="$PROJECT_DIR$/text_analysis.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/text_functions.R" afterPath="$PROJECT_DIR$/text_functions.R" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,8 +24,8 @@
       <file leaf-file-name="text_analysis.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/text_analysis.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="264">
-              <caret line="16" column="48" lean-forward="true" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
+            <state relative-caret-position="476">
+              <caret line="33" column="16" lean-forward="false" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
               <folding>
                 <element signature="e#57#92#0" expanded="true" />
               </folding>
@@ -379,7 +377,14 @@
       <option name="project" value="LOCAL" />
       <updated>1505926794318</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="added np.save into binary">
+      <created>1507102367945</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1507102367945</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -461,8 +466,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/text_analysis.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="16" column="48" lean-forward="true" selection-start-line="16" selection-start-column="48" selection-end-line="16" selection-end-column="48" />
+        <state relative-caret-position="476">
+          <caret line="33" column="16" lean-forward="false" selection-start-line="33" selection-start-column="16" selection-end-line="33" selection-end-column="16" />
           <folding>
             <element signature="e#57#92#0" expanded="true" />
           </folding>
