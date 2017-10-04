@@ -63,11 +63,11 @@ for synopses_line_no in range(0, len(synopses_text)):
 # --------------
 wordexists_doc = wordcount_doc
 wordexists_doc[wordexists_doc != 0] = 1
-print("wordexists")
-print(wordexists_doc [0:20, ])
+# print("wordexists")
+# print(wordexists_doc [0:20, ])
 
 # --------------
-# Category Matrix
+# Category-wise split
 # --------------
 exist_cat_list = []
 count_cat_list = []
@@ -75,12 +75,17 @@ for i in range(1, 10):
     exist_cat_list.append(wordexists_doc[np.where(category == i)[0],:])
     count_cat_list.append(wordcount_doc[np.where(category == i)[0],:])
 
+# --------------
+# Row-wise sums
+# --------------
+numdocs_word =  np.zeros(shape=(9, len(sorted_dictionary_list)), dtype=np.int16)
+num_occurances_indoc_word = np.zeros(shape=(9, len(sorted_dictionary_list)), dtype=np.int16)
 for i in range(0, 9):
-    numdocs_word[i] = np.sum(exist_cat_list[i],axis=0)
-    num_occurances_indoc_word[i] = np.sum(count_cat_list[i], axis=0)
+    numdocs_word[i,] = np.sum(exist_cat_list[i],axis=0)
+    num_occurances_indoc_word[i,] = np.sum(count_cat_list[i], axis=0)
 
 
 print("numdocs_word")
-print(numdocs_word)
+print(numdocs_word[4,])
 
 # np.save("cleaned/outputtrainmatrix", wordcount_doc )
