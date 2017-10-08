@@ -41,6 +41,6 @@ write(x = synopses,file = "cleaned/training_synopses.txt")
 synopses_input <- stage2_test_variants$Synopsis
 synopses <- cleaning_cancer_text(synopses_input,word_freq)
 stage2_test_variants$Synopsis <- synopses
-save(training_variants,file = "cleaned/stage2_test_words_removed_cleaned.bin")
+save(stage2_test_variants,file = "cleaned/stage2_test_words_removed_cleaned.bin")
 write(x = synopses,file = "cleaned/stage2_test_synopses.txt")
 
