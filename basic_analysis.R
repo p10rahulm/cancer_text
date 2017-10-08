@@ -46,7 +46,7 @@ stage2_test_textvec <- readLines("rawdata/stage2_test_text.csv")
 stage2_test_textvec <- stage2_test_textvec[2:length(stage2_test_textvec)]
 stage2_test_textvec <- gsub(pattern = "[0-9]+\\|\\|",replacement = "",stage2_test_textvec)
 
-stage2_test_text <- data.frame("ID"=seq(0,length(stage2_test_textvec)-1),"Synopsis" = stage2_test_textvec)
+stage2_test_text <- data.frame("ID"=seq(1,length(stage2_test_textvec)),"Synopsis" = stage2_test_textvec)
 stage2_test_variants <- merge(stage2_test_variants,stage2_test_text,by.x="ID",by.y = "ID",all.x=T)
 rm(stage2_test_text,stage2_test_textvec)
 save(stage2_test_variants,file = "cleaned/stage2_test_variants.bin")

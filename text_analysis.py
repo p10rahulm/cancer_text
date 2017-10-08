@@ -102,6 +102,11 @@ with open("cleaned/training_synopses.txt", "r") as f:
 with open("rawdata/training_variants.csv", "r") as f:
     training_data = f.readlines()
 
+# Test Data
+with open("cleaned/stage2_test_synopses.txt", "r") as f:
+    test_synopses_text = f.readlines()
+
+
 # --------------
 # Clean meta data
 # --------------
@@ -172,39 +177,68 @@ prob_occurances_indoc_word = num_occurances_indoc_word / np.sum(num_occurances_i
 # -------------
 # Constants
 # -------------
-
-ALPHA = 2
-BETA = 2
+# Please check the part_A_power and part_B_power weights should depend on document length
+PART_A_POWER = 2
+PART_B_POWER = 2
 WORDS_LOG = 30
-TR_POWER = 2
+LAMBDA = 2
 NUM_DIM = len(prob_occurances_indoc_word)
-numwords = np.ma.count(prob_occurances_indoc_word, axis=1)[0]
+NUMWORDS = np.ma.count(prob_occurances_indoc_word, axis=1)[0]
 
 # -------------
 # Calculating Mean and transformed mean
 # -------------
-mean = np.sum(prob_occurances_indoc_word, axis=1) / numwords
-mean_tr = (1 / mean) * ((mean * 9) ** TR_POWER)
+mean = np.sum(prob_occurances_indoc_word, axis=1) / NUMWORDS
+mean_tr = (1 / mean) * ((mean * NUM_DIM) ** LAMBDA)
 
-prob_occurances_indoc_word_tr = (prob_occurances_indoc_word * 9) ** TR_POWER
-mean_shaped = np.reshape(np.repeat(mean_tr, numwords), (9, numwords))
-part_a_wt = np.sum((prob_occurances_indoc_word_tr - mean_shaped) ** 2, axis=0) ** ALPHA
-part_b_wt = (np.log(np.sum(num_occurances_indoc_word ** 2, axis=0)) / np.log(WORDS_LOG)) ** BETA
+prob_occurances_indoc_word_tr = (prob_occurances_indoc_word * NUM_DIM) ** LAMBDA
+mean_inv_shaped = np.reshape(np.repeat(1/mean, NUMWORDS), (NUM_DIM, NUMWORDS))
+prob_occurances_indoc_word_tr = prob_occurances_indoc_word_tr*mean_inv_shaped
+mean_tr_shaped = np.reshape(np.repeat(mean_tr, NUMWORDS), (NUM_DIM, NUMWORDS))
+part_a_wt = np.sum((prob_occurances_indoc_word_tr - mean_tr_shaped ) ** 2, axis=0)**0.5
+part_b_wt = (np.log(np.sum(num_occurances_indoc_word ** 2, axis=0)**0.5) / np.log(WORDS_LOG))
+word_wts =(part_a_wt**PART_A_POWER)*(part_b_wt **PART_B_POWER)
+avg_word_wt = np.average(word_wts)
+word_wts = word_wts/avg_word_wt
 
-print(np.max(part_a_wt))
-# noinspection PyTypeChecker
-print(np.max(part_b_wt))
-wts_arr = part_a_wt * part_b_wt
-print("part_a_wt")
-print(part_a_wt[1:10])
-print(part_a_wt[160:165])
-print("wts_array")
-print(wts_arr[1:10])
-print(wts_arr[160:165])
+################################
+## Checks: This section for some checks on model
+#
+# print("np.max(np.sum(wordcount_doc,axis=1))")
+# print(np.max(np.sum(wordcount_doc,axis=1)))
+# print("np.average(np.sum(wordcount_doc,axis=1))")
+# print(np.average(np.sum(wordcount_doc,axis=1)))
+#
+# print("max part_a_wt")
+# print(np.max(part_a_wt))
+# print("max part_b_wt")
+# print(np.max(part_b_wt))
+# print("max word_wts")
+# print(np.max(word_wts))
+# IDHL indicates category 8 or 9. This is word 163 and should have a high weight
+# print("part_a_wt[1:10]")
+# print(part_a_wt[1:10])
+# print("part_a_wt[160:165]")
+# print(part_a_wt[160:165])
+# print("word_wts[0:9]")
+# print(word_wts[0:9])
+# print("word_wts[160:165]")
+# print(word_wts[160:165])
+################################
 
-# IDHL indicates category 8 or 9
-print("numdocs_word")
-print(numdocs_word[:, 1:12])
-print("num_occurances_indoc_word")
-print(num_occurances_indoc_word[:, 1:12])
+#--------
+# Work with Test data
+#--------
+test_synopses_text = [x.strip() for x in test_synopses_text]
+test_words = [x.split() for x in test_synopses_text]
+LEN_TEST = len(test_words )
+test_document_cat_probs = np.zeros(shape=(NUM_DIM, LEN_TEST), dtype=np.float)
+for line_no in range(0,len(test_words)):
+    for word in test_words[line_no]:
+        if(word in sorted_dictionary_index):
+            test_document_cat_probs[:,line_no] += word_wts[sorted_dictionary_index[word]]*prob_occurances_indoc_word[:,sorted_dictionary_index[word]]
+test_document_cat_probs = test_document_cat_probs/np.sum(test_document_cat_probs,axis = 0)
+np.savetxt("cleaned/test_document_cat_probs.txt", test_document_cat_probs.T, delimiter="|")
+
+
 # np.save("cleaned/outputtrainmatrix", wordcount_doc )
