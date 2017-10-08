@@ -50,10 +50,10 @@
 # 20) One categorization could be from plane to hyperbolic. But this gives issues of infinity at probability 1
 # 21) To constrain the space, we could use an exponential function, but this works only for values greater than 1
 # 22) An appropriate solution is to use a exponential transformation after multiplying by n, where n is num. dimensions
-# 23) We can therefore use the transformation (Xi*n)^(alpha), where alpha is a tuned variable
-# 24) Further to take into account point (17) we can do a elementwise multiplication with 1/(Mi)
+# 23) We can therefore use the transformation (Xi*n)^(lambda), where lambda is a tuning parameter
+# 24) Further to take into account point (17) we can do a element-wise multiplication with 1/(Mi)
 #       This is done to account for probability difference between the axes
-# 25) The transformed space therefore is given by (Xi*n)^(alpha)*(1/Mi)
+# 25) The transformed space therefore is given by (Xi*n)^(lambda)*(1/Mi)
 # 26) Lets call the mean in transformed space as Mi_tr and each of the word vectors as Xi_tr
 # 27) Then the weight assigned can be distance(Mi_tr - Xi_tr)
 #
@@ -62,12 +62,22 @@
 #       For example, X1 = (0.9,0.1), X2 = (0.9,0.1) but W1 = (9,1), W2 = (900,100). Which one has more information?
 # 29) Due to law of large numbers, W2 has a higher likelihood of being the more accurate description of the probability
 #       distribution than W1, which might be a random occurrence.
-# 30)
+# 30) To include this as part of our weights, we use log(total word occurrences) as part of the weight for the word
+#       Note to self: Could it be due to information entropy
 
-# This weight is going to be based on two factors.
-# A, which will represent distance from mean
-# B which will represent the total count of occurrence of that word
-#
+# To summarize,
+# 1) The probability distribution of a document = sigma(alpha*Xi)
+#       where
+#       alpha is word weight
+#       Xi is P(Ci|word)
+# 2) alpha is composed of two parts: (a) distance from mean in transformed space and (b) log of total occurrences
+# 3) Transformed space is defined as ((Xi*n)^lambda)*(1/Mi). We can assume lambda to be 2 for starters
+# 4) Mi_tr = ((Mi*n)^lambda)*(1/Mi); Xi_tr = ((Xi*n)^lambda)*(1/Mi)
+# 5) We can assume euclidean distance. alpha  proportional to distance(Mi_tr - Xi_tr)
+# 6) alpha also proportional to log(sigma(Wi)) where Wi is word count of W in category i
+# 7) We can scale each of the above by tuning parameters beta and gamma (assumed to be 2 and 1 for now)
+#       Note to self: There is likely another dependence on document length, which we have not accounted for.
+# 8) therefore alpha = distance(Mi_tr - Xi_tr)^beta * log(sigma(Wi))^gamma
 #
 # ###############################
 
